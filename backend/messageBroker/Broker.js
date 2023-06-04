@@ -1,7 +1,6 @@
 const redis = require("redis");
 
 const channels = {
-  test: "movies",
   blockchain: "blockchain",
 };
 
