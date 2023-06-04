@@ -15,7 +15,7 @@ class AppError extends Error {
       case 404:
         this.status = "Not found";
         break;
-      case statusCode.startsWith("5"):
+      case String(statusCode).startsWith("5"):
         this.status = "Internal Server Error";
         break;
     }
