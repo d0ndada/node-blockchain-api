@@ -4,8 +4,7 @@ import axios from "axios";
 
 function App() {
   const [blockchain, setBlockchain] = useState([]);
-  const [errorMessage, setErrorMessage] = useState("");
-  const [isDataEmpty, setIsDataEmpty] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   const url = "http://localhost:5000/api/1/blocks";
 
@@ -16,7 +15,7 @@ function App() {
       setBlockchain(data.data);
     } catch (error) {
       if (error.response && error.response.status === 400) {
-        setErrorMessage("Invalid request. Please provide valid data.");
+        setErrorMessage(error.response.data.error);
       } else {
         setErrorMessage("An error occurred. Please try again later.");
       }
@@ -28,29 +27,24 @@ function App() {
   }, []);
 
   const handleChange = () => {
-    setErrorMessage(false);
+    setErrorMessage(null);
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = e.target.data.value;
 
-    if (!data || data.trim() === "") {
-      setErrorMessage("Data cannot be empty!");
-      setIsDataEmpty(true);
-      return;
-    }
-
     const newBlock = { data };
     try {
-      setIsDataEmpty(false);
       await axios.post(url, newBlock);
       getBlockchain();
       e.target.reset();
     } catch (error) {
-      if (error.response && error.response.data &&) {
-        setErrorMessage("Invalid request. Please provide valid data.");
+      if (error.response && error.response.data && error.response.data.error) {
+        setErrorMessage(error.response.data.error);
+        console.log(errorMessage);
+        console.log(error.response.data.error.status);
       } else {
-        setErrorMessage("An error occurred. Please try again later.");
+        setErrorMessage("An unexpected error occurred.");
       }
     }
   };
@@ -75,9 +69,7 @@ function App() {
             <button className="submit-btn">Add</button>
           </div>
         </form>
-        {isDataEmpty
-          ? errorMessage && <p className="error">{errorMessage}</p>
-          : ""}
+        {errorMessage && <p className="error">{errorMessage}</p>}
       </div>
       <ul>
         {blockchain.map((block) => (
