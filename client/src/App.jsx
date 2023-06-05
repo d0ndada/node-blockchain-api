@@ -55,7 +55,9 @@ function App() {
     if (blockContainerRef.current) {
       const { scrollHeight, clientHeight, scrollTop } =
         blockContainerRef.current;
-      setShowScrollArrow(scrollTop < clientHeight + scrollHeight);
+      setShowScrollArrow(
+        clientHeight >= 320 && scrollTop < scrollHeight - clientHeight
+      );
     }
   };
 
