@@ -13,4 +13,4 @@ const GENESIS_DATA = {
   lastHash: "######",
 };
 
-module.exports = GENESIS_DATA;
+module.exports = { GENESIS_DATA, MINE_RATE, INITIAL_BALANCE };
