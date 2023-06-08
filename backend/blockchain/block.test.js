@@ -1,15 +1,25 @@
+const hexToBinary = require("hex-to-binary");
 const Block = require("./Block");
 const Transaction = require("../Transaction");
-const GENESIS_DATA = require("../utilities/config");
+const { GENESIS_DATA, MINE_RATE } = require("../utilities/config");
 const crypto = require("../utilities/hash");
 
 describe("Block", () => {
-  const timestamp = new Date().toString();
+  const timestamp = new Date();
   const lastHash = "prev-hash";
   const hash = "curr-hash";
   const data = ["Avatar", "Ant-Man", "Cocaine Bear"];
+  const nonce = 1;
+  const difficulty = 1;
 
-  const block = new Block({ timestamp, data, hash, lastHash });
+  const block = new Block({
+    timestamp,
+    data,
+    hash,
+    lastHash,
+    nonce,
+    difficulty,
+  });
 
   it("should set a timestamp", () => {
     // Använd .not för att negera en assertion...
@@ -27,9 +37,35 @@ describe("Block", () => {
   it("should set the lasthash to the hash of the previous block", () => {
     expect(block.lastHash).toEqual(lastHash);
   });
+  it("should have a nonce", () => {
+    expect(block.nonce).toEqual(nonce);
+  });
 
+  it("should have a difficulty value", () => {
+    expect(block.difficulty).toEqual(difficulty);
+  });
   it("should return an instance of Block", () => {
     expect(block instanceof Block).toBe(true);
+  });
+
+  describe("changeDifficultyLevel", () => {
+    it("raises the difficulty level for a quickly mined block", () => {
+      expect(
+        Block.adjustDifficultyLevel({
+          originalBlock: block,
+          timestamp: block.timestamp + MINE_RATE - 100,
+        })
+      ).toEqual(block.difficulty + 1);
+    });
+
+    it("lowers the difficulty level for a slowly mined block", () => {
+      expect(
+        Block.adjustDifficultyLevel({
+          originalBlock: block,
+          timestamp: block.timestamp + MINE_RATE + 100,
+        })
+      ).toEqual(block.difficulty - 1);
+    });
   });
 });
 
@@ -71,7 +107,13 @@ describe("mineBlock function", () => {
   // på input värdena, timestamp, lastHash, data
   it("should create a hash based on input arguments", () => {
     expect(minedBlock.hash).toEqual(
-      crypto(minedBlock.timestamp, lastBlock.hash, data)
+      crypto(
+        minedBlock.timestamp,
+        minedBlock.nonce,
+        minedBlock.difficulty,
+        lastBlock.hash,
+        data
+      )
     );
   });
   it("cretae a hash that matches difficulty level ", () => {
@@ -81,7 +123,7 @@ describe("mineBlock function", () => {
   });
 
   it("adjust tje difficultyLevel", () => {
-    const difficultyLevel = [
+    const difficultyResult = [
       lastBlock.difficulty + 1,
       lastBlock.difficulty - 1,
     ];
