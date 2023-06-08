@@ -5,7 +5,7 @@ const { GENESIS_DATA, MINE_RATE } = require("../utilities/config");
 const crypto = require("../utilities/hash");
 
 describe("Block", () => {
-  const timestamp = new Date();
+  const timestamp = Date.now();
   const lastHash = "prev-hash";
   const hash = "curr-hash";
   const data = ["Avatar", "Ant-Man", "Cocaine Bear"];
@@ -84,7 +84,7 @@ describe("genesis function", () => {
 describe("mineBlock function", () => {
   const lastBlock = Block.genesis();
   // const data = 'New Data';
-  const data = new Transaction(100, Date.now());
+  const data = "new data";
   const minedBlock = Block.mineBlock({ lastBlock, data });
 
   it("should return an instance of Block", () => {
