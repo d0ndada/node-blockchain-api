@@ -1,6 +1,5 @@
 const hexToBinary = require("hex-to-binary");
 const Block = require("./Block");
-// const Transaction = require("../Transaction");
 const { GENESIS_DATA, MINE_RATE } = require("../utilities/config");
 const crypto = require("../utilities/hash");
 

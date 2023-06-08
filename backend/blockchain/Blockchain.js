@@ -1,5 +1,5 @@
 const Block = require("./Block");
-const crypto = require("./hash");
+const crypto = require("../utilities/hash");
 
 class Blockchain {
   constructor() {
@@ -9,6 +9,7 @@ class Blockchain {
   addBlock({ data }) {
     const addedBlock = Block.mineBlock({ lastBlock: this.chain.at(-1), data });
     this.chain.push(addedBlock);
+    return addedBlock;
   }
 
   replaceChain(chain) {

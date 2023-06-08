@@ -45,7 +45,7 @@ class Block {
     });
   }
   static adjustDifficultyLevel({ originalBlock, timestamp }) {
-    console.log(originalBlock);
+    // console.log(originalBlock);
     const { difficulty } = originalBlock;
 
     if (difficulty < 1) return 1;

@@ -1,7 +1,7 @@
 const Broker = require("../messageBroker/Broker");
-const AppError = require("../utlilities/AppError");
+const AppError = require("../utilities/AppError");
 const Blockchain = require("../blockchain/Blockchain");
-const catchErrorAsync = require("../utlilities/catchErrorAsync");
+const catchErrorAsync = require("../utilities/catchErrorAsync");
 
 const response = {
   status: "Not found",
