@@ -4,7 +4,11 @@ const Block = require("./Block");
 describe("Blockchain", () => {
   let blockchain;
 
-  beforeEach(() => (blockchain = new Blockchain()));
+  beforeEach(() => {
+    blockchain = new Blockchain();
+    theNewChain = new Blockchain();
+    originalChain = [...blockchain.chain];
+  });
 
   // Test 1. kontrollerar att chain är av typen Array
   // chain är en egenskap som kommer att finnas i blockchain klassen
@@ -63,15 +67,36 @@ describe("Blockchain", () => {
 
   describe("ReplaceChain", () => {
     describe("when the new chain is not larger", () => {
-      it("should not replace the chain", () => {});
+      it("should not replace the chain", () => {
+        theNewChain.chain[1] = {
+          data: "New Movie",
+        };
+        blockchain.replaceChain(theNewChain.chain);
+      });
     });
 
     describe("when the new chain is larger", () => {
-      describe("but is invalid");
-      it("should not replace the chain", () => {});
+      beforeEach(() => {
+        theNewChain.addBlock({ data: "avenger" });
+        theNewChain.addBlock({ data: "aquaman" });
+        theNewChain.addBlock({ data: "antman" });
+        theNewChain.addBlock({ data: "madagascar" });
+      });
+
+      describe("but is invalid", () => {
+        it("should not replace the chain", () => {
+          theNewChain.chain[2].hash = "not-right-hash";
+          expect(blockchain.chain).toEqual(originalChain);
+        });
+      });
 
       describe("and when it is valid", () => {
-        it("should replace the chain", () => {});
+        beforeEach(() => {
+          blockchain.replaceChain(theNewChain.chain);
+        });
+        it("should replace the chain", () => {
+          expect(blockchain.chain).toEqual(theNewChain.chain);
+        });
       });
     });
   });
