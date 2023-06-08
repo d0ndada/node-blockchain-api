@@ -1,4 +1,4 @@
-const EC = require("elliptic");
+const EC = require("elliptic").ec;
 const crypto = require("../utilities/hash");
 
 const ec = new EC("secp256k1");
