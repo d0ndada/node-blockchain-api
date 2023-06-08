@@ -1,7 +1,7 @@
 const Block = require("./Block");
 const Transaction = require("../Transaction");
-const GENESIS_DATA = require("./config");
-const crypto = require("./hash");
+const GENESIS_DATA = require("../utilities/config");
+const crypto = require("../utilities/hash");
 
 describe("Block", () => {
   const timestamp = new Date().toString();
@@ -74,18 +74,17 @@ describe("mineBlock function", () => {
       crypto(minedBlock.timestamp, lastBlock.hash, data)
     );
   });
+  it("cretae a hash that matches difficulty level ", () => {
+    expect(
+      hexToBinary(minedBlock.hash).substring(0, minedBlock.difficulty)
+    ).toEqual("0".repeat(minedBlock.difficulty));
+  });
 
-  describe("Block data", () => {
-    it("should be of type Transaction", () => {
-      expect(minedBlock.data instanceof Transaction).toBe(true);
-    });
-
-    it("should contain a value", () => {
-      expect(minedBlock.data.amount).toEqual(100);
-    });
-
-    it("should contain a transaction date", () => {
-      expect(minedBlock.data.transactionDate).toEqual(Date.now());
-    });
+  it("adjust tje difficultyLevel", () => {
+    const difficultyLevel = [
+      lastBlock.difficulty + 1,
+      lastBlock.difficulty - 1,
+    ];
+    expect(difficultyResult.includes(minedBlock.difficulty)).toBe(true);
   });
 });
