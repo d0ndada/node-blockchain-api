@@ -15,7 +15,7 @@ class Broker {
     this.subscribeToChannels();
 
     this.subscriber.on("message", (channel, message) => {
-      console.log(`Got the message: ${message} on channel: ${channel}`);
+      this.handleMessage(channel, message);
     });
   }
 
@@ -40,7 +40,11 @@ class Broker {
     });
   }
   publish(channel, message) {
-    this.publisher.publish(channel, message);
+    this.subscriber.unsubscribe(channel, () => {
+      this.publisher.publish(channel, message, () => {
+        this.subscriber.subscribe(channel);
+      });
+    });
   }
   broadcastBlockchain() {
     this.publish(channels.blockchain, JSON.stringify(this.blockchain.chain));
