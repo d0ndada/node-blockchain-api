@@ -5,7 +5,7 @@ class Transaction {
   constructor({ sender, recipient, amount }) {
     this.id = uuidv4();
     this.outputMap = this.createMap({ sender, recipient, amount });
-    this.input = this.createMapInput({ sender, outputMap: this.outputMap });
+    this.input = this.createInput({ sender, outputMap: this.outputMap });
   }
 
   createMap({ sender, recipient, amount }) {
@@ -15,7 +15,7 @@ class Transaction {
     return map;
   }
 
-  createMapInput({ sender, outputMap }) {
+  createInput({ sender, outputMap }) {
     return {
       timestamp: Date.now(),
       amount: sender.balance,
@@ -38,6 +38,22 @@ class Transaction {
       return false;
     }
     return true;
+  }
+
+  update({ sender, recipient, amount }) {
+    if (amount > this.outputMap[sender.publicKey]) {
+      throw new Error("Not enough funds");
+    }
+
+    if (!this.outputMap[recipient]) {
+      this.outputMap[recipient] = amount;
+    } else {
+      this.outputMap[recipient] = this.outputMap[recipient] + amount;
+    }
+    this.outputMap[sender.publicKey] =
+      this.outputMap[sender.publicKey] - amount;
+
+    this.input = this.createInput({ sender, outputMap: this.outputMap });
   }
 }
 
