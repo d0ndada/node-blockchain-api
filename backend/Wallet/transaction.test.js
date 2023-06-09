@@ -75,4 +75,67 @@ describe("Transaction", () => {
       });
     });
   });
+
+  describe("update transaction", () => {
+    let originalSignature, originalSenderOutput, nextRecipient, nextAmount;
+    describe("and the amount is invalid", () => {
+      it("should thorw an exception", () => {
+        expect(() => {
+          transaction.update({ sender, recipient: "Harry", amount: 1000 });
+        }).toThrow("Not enough funds");
+      });
+    });
+    describe("and the amount is valid", () => {
+      beforeEach(() => {
+        originalSignature = transaction.input.signature;
+        originalSenderOutput = transaction.outputMap[sender.publicKey];
+        (nextRecipient = "Rally"), (nextAmount = 100);
+        transaction.update({
+          sender,
+          recipient: nextRecipient,
+          amount: nextAmount,
+        });
+      });
+      it("should display the amount ot the next recipient", () => {
+        expect(transaction.outputMap[nextRecipient]).toEqual(nextAmount);
+      });
+      it("should recalculate the balance for the sender", () => {
+        expect(transaction.outputMap[sender.publicKey]).toEqual(
+          originalSenderOutput - nextAmount
+        );
+      });
+      it("match the output value with the input value", () => {
+        expect(
+          Object.values(transaction.outputMap).reduce(
+            (total, amount) => total + amount
+          )
+        ).toEqual(transaction.input.amount);
+      });
+      it("should synchronize the transaction", () => {
+        expect(transaction.input.signature).not.toEqual(originalSignature);
+      });
+      describe("and doing an update", () => {
+        let newAmount;
+        beforeEach(() => {
+          newAmount = 75;
+          transaction.update({
+            sender,
+            recipient: nextRecipient,
+            amount: newAmount,
+          });
+        });
+        it("should accumulate the recipient amount", () => {
+          console.log(nextRecipient);
+          expect(transaction.outputMap[nextRecipient]).toEqual(
+            nextAmount + newAmount
+          );
+        });
+        it("should update the balance for hte sender", () => {
+          expect(transaction.outputMap[sender.publicKey]).toEqual(
+            originalSenderOutput - nextAmount - newAmount
+          );
+        });
+      });
+    });
+  });
 });
