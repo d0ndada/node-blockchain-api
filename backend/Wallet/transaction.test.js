@@ -40,7 +40,7 @@ describe("Transaction", () => {
       expect(transaction.input.amount).toEqual(sender.balance);
     });
     it("should set the addesses to the senders publicKey", () => {
-      expect(transaction.input.adress).toEqual(sender.publicKey);
+      expect(transaction.input.address).toEqual(sender.publicKey);
     });
     it("should sign the input", () => {
       expect(
