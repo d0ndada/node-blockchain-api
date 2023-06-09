@@ -1,6 +1,6 @@
 const Transaction = require("./Transaction");
 const Wallet = require("./Wallet");
-const TransactionPool = require("./TransactionPool");
+const TransactionPool = require("./TransactionPool.js");
 
 describe("TransactionPool", () => {
   let transactionPool, transaction;
@@ -24,9 +24,7 @@ describe("TransactionPool", () => {
     it("should return an existing transaction based on the input address", () => {
       transactionPool.addTransaction(transaction);
       expect(
-        transactionPool.transactionExist({
-          address: sender.publicKey,
-        })
+        transactionPool.transactionExist({ address: sender.publicKey })
       ).toBe(transaction);
     });
   });

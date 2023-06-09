@@ -5,6 +5,9 @@ class TransactionPool {
   addTransaction(transaction) {
     this.TransactionMap[transaction.id] = transaction;
   }
+  replacePool(transactions) {
+    this.TransactionMap = transactions;
+  }
   transactionExist({ address }) {
     const transaction = Object.values(this.TransactionMap);
     return transaction.find(
