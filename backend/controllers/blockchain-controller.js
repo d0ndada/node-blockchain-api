@@ -2,6 +2,7 @@ const Broker = require("../messageBroker/Broker");
 const AppError = require("../utilities/AppError");
 const Blockchain = require("../blockchain/Blockchain");
 const catchErrorAsync = require("../utilities/catchErrorAsync");
+const TransactionPool = require("../Wallet/TransactionPool");
 
 const response = {
   status: "Not found",
@@ -11,9 +12,10 @@ const response = {
 };
 
 const blockchain = new Blockchain();
-const messageBroker = new Broker(blockchain);
+const transactionPool = new TransactionPool();
+const messageBroker = new Broker(blockchain, transactionPool);
 
-exports.listBlockchain = catchErrorAsync(async (req, res) => {
+exports.blocks = catchErrorAsync(async (req, res) => {
   response.status = "Success";
   response.statusCode = 200;
   response.data = blockchain.chain;
@@ -29,14 +31,22 @@ exports.addBlock = catchErrorAsync(async (req, res) => {
   try {
     const { data } = req.body;
     const block = blockchain.addBlock({ data });
-    messageBroker.broadcast(block);
+    messageBroker.broadcastBlockchain();
     response.statusCode = 201;
-    response.data = data;
+    response.data = block;
     response.status = "Success";
     res
       .status(response.statusCode)
-      .json({ message: "Added new block", response, block: block });
+      .json({ message: "Added new block", response });
   } catch (error) {
     throw new AppError("Failed to add block!", 500);
   }
+});
+
+exports.transactions = catchErrorAsync(async (req, res) => {
+  response.status = "Success";
+  response.statusCode = 201;
+  response.data = transactionPool.TransactionMap;
+
+  res.status(response.statusCode).join(response);
 });

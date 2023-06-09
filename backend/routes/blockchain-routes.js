@@ -1,11 +1,9 @@
 const express = require("express");
 const router = express.Router();
 
-const {
-  listBlockchain,
-  addBlock,
-} = require("../controllers/blockchain-controller");
+const { blocks, addBlock } = require("../controllers/blockchain-controller");
 
-router.route("/").get(listBlockchain).post(addBlock);
+router.route("/").get(blocks).post(addBlock);
+// router.route("/").get(transactions).post(addBlock);
 
 module.exports = router;
