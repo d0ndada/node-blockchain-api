@@ -14,4 +14,18 @@ describe("Wallet", () => {
   it("should have a publickey", () => {
     expect(wallet).toHaveProperty("publicKey");
   });
+
+  describe("signing data", () => {
+    const data = "Avengers";
+
+    it("should verify a valid signature", () => {
+      expect(
+        verifySignature({
+          publicKey: wallet.publicKey,
+          data,
+          signature: wallet.sign(data),
+        })
+      ).toBe(true);
+    });
+  });
 });
