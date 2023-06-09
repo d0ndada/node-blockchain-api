@@ -28,4 +28,28 @@ describe("Transaction", () => {
       );
     });
   });
+
+  describe("input", () => {
+    it("should have an input property", () => {
+      expect(transaction).toHaveProperty("input");
+    });
+    it("should have an timestamp property", () => {
+      expect(transaction.input).toHaveProperty("timestamp");
+    });
+    it("should set the amount to the sender balance", () => {
+      expect(transaction.input.amount).toEqual(sender.balance);
+    });
+    it("should set the addesses to the senders publicKey", () => {
+      expect(transaction.input.adress).toEqual(sender.publicKey);
+    });
+    it("should sign the input", () => {
+      expect(
+        verifySignature({
+          publicKey: sender.publicKey,
+          data: transaction.outputMap,
+          signature: transaction.input.signature,
+        })
+      ).toBe(true);
+    });
+  });
 });
