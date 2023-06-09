@@ -3,6 +3,7 @@ const express = require("express");
 const axios = require("axios");
 const Blockchain = require("./blockchain/Blockchain");
 const Blocks = require("./routes/blockchain-routes");
+const Transactions = require("./routes/transaction-routes");
 const TransactionPool = require("./Wallet/TransactionPool");
 const Wallet = require("./Wallet/Wallet");
 const Broker = require("./messageBroker/Broker");
@@ -23,7 +24,7 @@ const syncData = async () => {
     const transactionMapUrl = `${ROOT_ADDRESS}/api/1/Transaction`;
     let result = await axios.get(blockchainUrl);
 
-    blockchain.replaceChain(data);
+    blockchain.replaceChain(result.data);
     console.log("Synchronizing at startup");
 
     result = await axios.get(transactionMapUrl);
@@ -36,14 +37,35 @@ const syncData = async () => {
 };
 
 // MIDDLEWARE
-
 app.use(express.json());
-
 app.use(cors());
 
 //ENDPOINTS
-
 app.use("/api/1/blocks", Blocks);
+
+app.post("/api/1/transaction", (req, res) => {
+  try {
+    const { recipient, amount } = req.body;
+    let transaction = transactionPool.transactionExist({
+      address: wallet.publicKey,
+    });
+    if (transaction) {
+      transaction.update({ sender: wallet, recipient, amount });
+    } else {
+      transaction = wallet.createTransaction({ amount, recipient });
+    }
+
+    transactionPool.addTransaction(transaction);
+    messageBroker.broadcastTransaction(transaction);
+    res.status(201).json({ status: "Success", data: transactionPool });
+  } catch (error) {
+    res.status(400).json({ status: "Error", message: error.message });
+  }
+});
+
+app.get("/api/1/transaction", (req, res) => {
+  res.status(200).json(transactionPool.transactionMap);
+});
 
 let PEER_PORT;
 
