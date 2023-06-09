@@ -46,6 +46,19 @@ describe("Wallet", () => {
         it("it creates a new instance with the wallet ", () => {
           expect(transaction instanceof Transaction).toBe(true);
         });
+
+        it("matches the input with the wallet", () => {
+          console.log(
+            `input address: ${transaction.input.address} ``wallet key: ${wallet.public} `
+          );
+          expect(transaction.input.address).toEqual(wallet.publicKey);
+        });
+        it("displays the amount to the recipient", () => {
+          console.log(
+            `Recipient: ${transaction.outputMap[recipient]}``Amount: ${amount} `
+          );
+          expect(transaction.outputMap[recipient]).toEqual(amount);
+        });
       });
     });
   });
