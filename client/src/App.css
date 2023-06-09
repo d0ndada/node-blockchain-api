@@ -1,60 +1,144 @@
 .App {
   text-align: center;
+  min-height: 96.5vh;
+    
 }
 
+.header{
+  /* border: 1px solid red; */
+    /* max-height: 15vh; */
+      min-height: 15vh;
+      display: flex;
+        /* flex-direction: row; */
+        /* flex-wrap: nowrap; */
+        align-content: center;
+        justify-content: center;
+        align-items: center;
+}
+.main{
+  /* border: 1px solid red; */
+  min-height: 66vh;
+    max-height: 70vh;
+      
+}
+.footer{
+  min-height: 15vh;
+  /* border: 1px solid red; */
+      display: flex;
+        flex-direction: row;
+      
+        justify-content: center;
+        align-items: center;
+      
+}
 
 .title{
   color: mediumpurple;
+      font-size: 25px;
 }
 
 .form-container{
-  /* background: whitesmoke; */
-    display: inline-block;
-        border-radius: 4px;
+display: inline-block;
+  border-radius: 4px;
+  /* width: 100%; */
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
 }
 
 .error{
-      color: red;
-        background-color: whitesmoke;
+      color: mediumpurple;
         display: inline-block;
         flex-direction: row;
         align-content: center;
         align-items: center;
         justify-content: center;
-        width: 209px;
+        font-size: 29px;
+
 }
+.block-container{
+        overflow: auto;
+        max-height: 320px;
+}
+.block-container::-webkit-scrollbar {
+  width: 10px;
+}
+
+.block-container::-webkit-scrollbar-track {
+  background: none;
+}
+
+.block-container::-webkit-scrollbar-thumb {
+  background: none;
+  
+  border-radius: 10px;
+}
+
+.block-container::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.block-container {
+  scrollbar-width: thin;
+  scrollbar-color: mediumpurple #f1f1f1;
+}
+
 .block{
 
 background-image: url("../public/block.jpg");
   background-repeat: no-repeat;
     background-size: cover;
   display: inline-flex;
-  margin: 60px;
-  margin-left: -19px;
+    margin: 44px;  margin-left: -19px;
   width: 9%;
   align-content: center;
   justify-content: center;
   height: 72px;
   flex-direction: row;
   align-items: center;
+      margin-bottom: -26px;
 }
 
+
 .block-text{
-      background: #BF2361;
-        font-weight: bolder;
-        /* background: darkred; */
-        box-shadow: 0px 0.4px 7px rgba(0, 0, 0, 0.034), 0px 0.9px 15.9px rgba(0, 0, 0, 0.049), 0px 1.5px 27.7px rgba(0, 0, 0, 0.06), 0px 2.4px 44.1px rgba(0, 0, 0, 0.07), 0px 3.7px 68px rgba(0, 0, 0, 0.08), 0px 5.7px 106.1px rgba(0, 0, 0, 0.091), 0px 9.5px 176.2px rgba(0, 0, 0, 0.106), 0px 19px 352px rgba(0, 0, 0, 0.14);
-        border-radius: 6px;
+          background: rosybrown;
+            font-weight: bolder;
+            box-shadow: 0px 0.4px 7px rgba(0, 0, 0, 0.034), 0px 0.9px 15.9px rgba(0, 0, 0, 0.049), 0px 1.5px 27.7px rgba(0, 0, 0, 0.06), 0px 2.4px 44.1px rgba(0, 0, 0, 0.07), 0px 3.7px 68px rgba(0, 0, 0, 0.08), 0px 5.7px 106.1px rgba(0, 0, 0, 0.091), 0px 9.5px 176.2px rgba(0, 0, 0, 0.106), 0px 19px 352px rgba(0, 0, 0, 0.14);
+            border-radius: 6px;
+            border: 3px solid rebeccapurple;
       
 }
 
+.scroll-arrow {
+  position: absolute;
+    display: flex;
+    font-size: 50px;
+    color: mediumpurple;
+    margin-left: 50%;
+    margin-top: -4%;
+      animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-20px);
+  }
+}
 
 .form__group {
   position: relative;
   padding: 15px 0 0;
   margin-top: 10px;
-  /* width: 50%; */
   display: flex;
+        margin-left: 38%;
 }
 
 .form__field {
@@ -130,17 +214,28 @@ background-image: url("../public/block.jpg");
   
 }
 
-/* style for form group container */
 .addBlock {
-  display: flex;
+  /* display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: center; */
+/* position: absolute; */
+  margin-left: -7%;
+  width: 31%;
 }
 
 
 
-/* style for button on hover */
 .submit-btn:hover {
   background-color: #BF2361 ;
   color: mediumpurple;
+}
+
+.GithubLogo{
+  height: 47px;
+}
+.link{
+  margin-left: 1%;
+}
+.footer-text{
+  margin:0;
 }

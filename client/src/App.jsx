@@ -20,7 +20,9 @@ function App() {
       if (error.response && error.response.status === 400) {
         setErrorMessage(error.response.data.error);
       } else {
-        setErrorMessage("An error occurred. Please try again later.");
+        setErrorMessage(
+          "Unable to connect ot the server, please check your internet connection and try again"
+        );
       }
     }
   };
@@ -47,7 +49,9 @@ function App() {
         // console.log(errorMessage);
         // console.log(error.response.data.error.status);
       } else {
-        setErrorMessage("An unexpected error occurred.");
+        setErrorMessage(
+          "Not connected to server, please connect to server to add block."
+        );
       }
     }
   };
