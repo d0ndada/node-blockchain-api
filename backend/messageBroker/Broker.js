@@ -2,11 +2,13 @@ const redis = require("redis");
 
 const channels = {
   blockchain: "blockchain",
+  transaction: "transaction",
 };
 
 class Broker {
-  constructor(blockchain) {
+  constructor(blockchain, transactionPool) {
     this.blockchain = blockchain;
+    this.transactionPool = transactionPool;
     this.publisher = redis.createClient();
     this.subscriber = redis.createClient();
 
@@ -18,8 +20,18 @@ class Broker {
   }
 
   handleMessage(channel, message) {
-    const blockchain = JSON.parse(message);
-    console.log(`Got the message on channel ${channel}, ${blockchain}`);
+    const parsedMessage = JSON.parse(message);
+    console.log(`Got the message on channel ${channel}, ${message}`);
+    switch (channel) {
+      case channel.blockchain:
+        this.blockchain.replaceChain(parsedMessage);
+        break;
+      case channels.transaction:
+        this.transactionPool.addTransaction(parsedMessage);
+        break;
+      default:
+        return;
+    }
   }
 
   subscribeToChannels() {
@@ -30,8 +42,11 @@ class Broker {
   publish(channel, message) {
     this.publisher.publish(channel, message);
   }
-  broadcast() {
-    this.publish(channels.blockchain, JSON.stringify(this.blockchain));
+  broadcastBlockchain() {
+    this.publish(channels.blockchain, JSON.stringify(this.blockchain.chain));
+  }
+  broadcastTransaction(transaction) {
+    this.publish(channels.transaction, JSON.stringify(transaction));
   }
 }
 
