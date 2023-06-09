@@ -1,5 +1,6 @@
 const { verifySignature } = require("../utilities");
 const Wallet = require("./Wallet");
+const Transaction = require("./Transaction");
 
 describe("Wallet", () => {
   let wallet;
@@ -49,13 +50,15 @@ describe("Wallet", () => {
 
         it("matches the input with the wallet", () => {
           console.log(
-            `input address: ${transaction.input.address} ``wallet key: ${wallet.public} `
+            `input address: ${transaction.input.address} `,
+            `wallet key: ${wallet.public} `
           );
           expect(transaction.input.address).toEqual(wallet.publicKey);
         });
         it("displays the amount to the recipient", () => {
           console.log(
-            `Recipient: ${transaction.outputMap[recipient]}``Amount: ${amount} `
+            `Recipient: ${transaction.outputMap[recipient]}`,
+            `Amount: ${amount} `
           );
           expect(transaction.outputMap[recipient]).toEqual(amount);
         });

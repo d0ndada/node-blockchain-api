@@ -68,24 +68,22 @@ describe("Blockchain", () => {
   describe("ReplaceChain", () => {
     describe("when the new chain is not larger", () => {
       it("should not replace the chain", () => {
-        theNewChain.chain[1] = {
-          data: "New Movie",
-        };
+        theNewChain.chain[1] = { data: "New Movie" };
         blockchain.replaceChain(theNewChain.chain);
       });
     });
 
     describe("when the new chain is larger", () => {
       beforeEach(() => {
-        theNewChain.addBlock({ data: "avenger" });
-        theNewChain.addBlock({ data: "aquaman" });
-        theNewChain.addBlock({ data: "antman" });
-        theNewChain.addBlock({ data: "madagascar" });
+        theNewChain.addBlock({ data: "Avatar" });
+        theNewChain.addBlock({ data: "Aquaman" });
+        theNewChain.addBlock({ data: "The Batman" });
+        theNewChain.addBlock({ data: "Iron Man" });
       });
 
       describe("but is invalid", () => {
         it("should not replace the chain", () => {
-          theNewChain.chain[2].hash = "not-right-hash";
+          theNewChain.chain[2].hash = "very-bad-hash";
           expect(blockchain.chain).toEqual(originalChain);
         });
       });

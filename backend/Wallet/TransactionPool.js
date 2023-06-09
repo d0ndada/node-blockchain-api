@@ -1,15 +1,15 @@
 class TransactionPool {
   constructor() {
-    this.TransactionMap = {};
+    this.transactionMap = {};
   }
   addTransaction(transaction) {
-    this.TransactionMap[transaction.id] = transaction;
+    this.transactionMap[transaction.id] = transaction;
   }
   replacePool(transactions) {
-    this.TransactionMap = transactions;
+    this.transactionMap = transactions;
   }
   transactionExist({ address }) {
-    const transaction = Object.values(this.TransactionMap);
+    const transaction = Object.values(this.transactionMap);
     return transaction.find(
       (transaction) => transaction.input,
       address === address
