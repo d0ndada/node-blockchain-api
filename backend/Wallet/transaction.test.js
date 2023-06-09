@@ -20,7 +20,7 @@ describe("Transaction", () => {
       expect(transaction).toHaveProperty("outputMap");
     });
     it("should display the amount to the recipient", () => {
-      expect(transaction.outputMap[sender.publicKey]).toEqual(amount);
+      expect(transaction.outputMap[recipient]).toEqual(amount);
     });
     it("should display the balance to the sender", () => {
       expect(transaction.outputMap[sender.publicKey]).toEqual(
